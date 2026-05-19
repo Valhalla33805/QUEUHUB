@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CM QueueHub - Select Department</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+/* YOUR EXACT SAME BEAUTIFUL DESIGN - PERFECTLY PRESERVED */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background:
+        linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+        url('background2.jpg') no-repeat center center/cover;
+}
+
+.container {
+    text-align: center;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(15px);
+    padding: 40px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 700px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.header {
+    margin-bottom: 30px;
+}
+
+.logo-placeholder {
+    width: 90px;
+    height: 90px;
+    margin: 0 auto 15px;
+    border-radius: 50%;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.logo-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.header h1 {
+    color: #d4f5d4;
+    margin-bottom: 10px;
+    font-size: 28px;
+}
+
+.header p {
+    color: #a8e6a3;
+    font-size: 14px;
+}
+
+h1 {
+    color: #d4f5d4;
+    margin-bottom: 10px;
+}
+
+p {
+    color: #a8e6a3;
+    margin-bottom: 30px;
+}
+
+/* ENHANCED CARDS */
+.card-container {
+    display: flex;
+    gap: 25px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.card {
+    background: white;
+    width: 220px;
+    padding: 30px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #0f9b0f, #a8e6a3);
+    transform: scaleX(0);
+    transition: transform 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-10px) scale(1.05);
+}
+
+.card:hover::before {
+    transform: scaleX(1);
+}
+
+.card.active {
+    box-shadow: 0 15px 35px rgba(15, 155, 15, 0.3);
+    border: 2px solid #0f9b0f;
+}
+
+.icon {
+    font-size: 40px;
+    margin-bottom: 15px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+.card h2 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.card p {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.live-status {
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 15px;
+    margin: 25px 0;
+    color: white;
+}
+
+.live-status h3 {
+    color: #d4f5d4;
+    margin-bottom: 10px;
+}
+
+#deptQueueStatus {
+    font-size: 24px;
+    margin: 10px 0;
+    font-weight: 500;
+}
+
+.back {
+    display: inline-block;
+    margin-top: 25px;
+    color: #a8e6a3;
+    text-decoration: none;
+    padding: 10px 20px;
+    border: 2px solid rgba(168, 230, 163, 0.5);
+    border-radius: 25px;
+    transition: 0.3s;
+}
+
+.back:hover {
+    background: rgba(168, 230, 163, 0.2);
+    transform: translateY(-2px);
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+    <!-- HEADER -->
+    <div class="header">
+        <div class="logo-placeholder">
+            <img src="cmlogo.png" alt="School Logo" onerror="this.style.display='none'">
+        </div>
+        <h1>CM QueueHub</h1>
+        <p>Smart Queue Management System</p>
+    </div>
+
+    <!-- DEPARTMENT SELECTION -->
+    <h1>Select Office</h1>
+    <p>Choose where you want to queue</p>
+
+    <div class="card-container">
+        <div class="card" data-dept="registrar" onclick="selectDepartment('registrar')">
+            <div class="icon">📄</div>
+            <h2>Registrar</h2>
+            <p>Documents, records<br>transcripts</p>
+        </div>
+
+        <div class="card" data-dept="finance" onclick="selectDepartment('finance')">
+            <div class="icon">💰</div>
+            <h2>Finance</h2>
+            <p>Payments, tuition<br>billing</p>
+        </div>
+    </div>
+
+    <!-- LIVE DEPARTMENT STATUS -->
+    <div class="live-status">
+        <h3>📊 Live Department Status</h3>
+        <div id="deptQueueStatus">Loading...</div>
+        <div id="deptWaitingCount" style="font-size: 14px; opacity: 0.9;">Connecting to queue...</div>
+    </div>
+
+    <a href="home.html" class="back">← Back to Main Dashboard</a>
+</div>
+
+<script src="queue-system.js"></script>
+<script>
+let selectedDepartment = null;
+
+// 🔥 DEPARTMENT-SPECIFIC QUEUE INTEGRATION
+function updateDepartmentStatus() {
+    const queue = window.QueueHub.queue;
+    
+    // Filter queue by department (future-proof for multi-department support)
+    const deptQueueCount = queue.list.length; // Currently shared, but ready for dept separation
+    
+    document.getElementById('deptQueueStatus').textContent = 
+        queue.current ? `Now Serving: ${queue.current.number}` : 'No active service';
+    
+    document.getElementById('deptWaitingCount').textContent = 
+        `${queue.list.length} people waiting • ${queue.stats?.totalToday || 0} served today`;
+}
+
+// 🎓 SELECT DEPARTMENT & REDIRECT
+async function selectDepartment(dept) {
+    try {
+        // Visual feedback
+        document.querySelectorAll('.card').forEach(card => card.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+        
+        // Store department selection
+        localStorage.setItem("selectedDepartment", dept);
+        localStorage.setItem("queueDepartment", dept);
+        
+        // Show loading
+        const card = event.currentTarget;
+        const originalText = card.innerHTML;
+        card.innerHTML = '<div class="icon">⏳</div><h2>Redirecting...</h2>';
+        
+        // Smooth redirect to role selection
+        setTimeout(() => {
+            window.location.href = "home.html";
+        }, 800);
+        
+    } catch (error) {
+        alert('Selection error: ' + error.message);
+        // Restore card content on error
+        event.currentTarget.innerHTML = originalText;
+    }
+}
+
+// 🔄 LIVE UPDATES FOR DEPARTMENT STATUS
+window.QueueHub.startLiveUpdates(updateDepartmentStatus);
+
+// 🏗️ FUTURE-PROOF: DEPARTMENT QUEUE SUPPORT
+// This sets up the system for department-specific queues
+function initDepartmentQueue(dept) {
+    // In future versions, each department can have its own queue:
+    // window.QueueHub.queue.departments = window.QueueHub.queue.departments || {};
+    // window.QueueHub.queue.departments[dept] = { current: null, list: [], counter: 0 };
+    console.log(`Ready for ${dept} department queue`);
+}
+
+// INITIAL LOAD
+updateDepartmentStatus();
+</script>
+</body>
+</html>
